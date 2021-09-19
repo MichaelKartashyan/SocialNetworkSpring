@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>Error 403</title>
+  <link rel="stylesheet" type="text/css" th:href="@{'/css/bootstrap.min.css'}">
+  <link rel="stylesheet" type="text/css" th:href="@{'/css/style.css'}">
+  <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<h1 class="text-center my-5"> УУУпс, что то пошло не так!</h1><br/>
+<p class="text-center my-5"> Вы можете вернуться <a th:href="@{'/index'}">На главную страницу</a>  или <a th:href="@{'/home'}">На свою страницу</a></p>
+
+
+
+
+
+<script type="text/javascript" th:src="@{'/js/bootstrap.min.js'}"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" layout:decorator="'layout/main.html'">
+
+<div layout:fragment="content">
+
+
+    <div class="container mt-2 d-flex" >
+
+        <div class="col-3 me-3">
+            <div class="list-group">
+                <a href="/mypage" class="list-group-item list-group-item-action ">Моя Страница</a>
+                <a href="/editmyprofile" class="list-group-item list-group-item-action ">Редактировать мою страницу</a>
+                <a href="/home" class="list-group-item list-group-item-action ">Новости</a>
+                <a href="/dialogsList" class="list-group-item list-group-item-action ">Сообщения</a>
+                <a href="/followers" class="list-group-item list-group-item-action">Подписчики</a>
+                <a href="/userslist" class="list-group-item list-group-item-action ">Все пользователи</a>
+
+            </div>
+        </div>
+
+        <div class="container mt-3 mb-4">
+
+            <div class="user-dashboard-info-box table-responsive mb-0 bg-white p-4 shadow-sm" th:if="${searchUsers!=null}">
+                <table class="table manage-candidates-top mb-0">
+                    <thead>
+                    <tr>
+                        <th>Имя</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr class="candidates-list" th:each="use:${searchUsers}">
+                        <td class="title">
+                            <div class="thumb">
+                                <img class="img-fluid" th:src="'/img/'+${use.imagePath}" alt="">
+                            </div>
+                            <div class="candidate-list-details">
+                                <div class="candidate-list-info">
+                                    <div class="candidate-list-title">
+                                        <h5 class="mb-0"><a class="text-black text-decoration-none" th:href="@{'/userprofile/' + ${use.id}}" th:text="${use.name}+' '+${use.surname}"></a></h5>
+                                    </div>
+                                    <div class="candidate-list-option">
+                                        <ul class="list-unstyled">
+                                            <li th:text="${use.city}"><i class="fas fa-filter pr-1"></i></li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div th:if="${searchUsers==null}">
+
+                <h2>Поиск не дал результатов</h2>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</html>

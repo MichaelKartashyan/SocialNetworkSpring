@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" layout:decorator="'layout/main.html'">
+
+<div layout:fragment="content">
+    <div class="container mt-2 d-flex">
+        <div class="col-3 me-3">
+            <div class="list-group">
+                <a href="/mypage" class="list-group-item list-group-item-action ">Моя Страница</a>
+                <a href="/editmyprofile" class="list-group-item list-group-item-action ">Редактировать мою страницу</a>
+                <a href="/home" class="list-group-item list-group-item-action ">Новости</a>
+                <a href="/dialogsList" class="list-group-item list-group-item-action ">Сообщения</a>
+                <a href="/followers" class="list-group-item list-group-item-action">Подписчики</a>
+                <a href="/userslist" class="list-group-item list-group-item-action">Все пользователи</a>
+
+            </div>
+        </div>
+
+
+        <div class="col-8 mypage-content-news">
+            <div class="container">
+                <div class="main-body">
+
+    <div id="postsList">
+        <div class="container bootstrap snippets bootdey" >
+            <div class="my-3">
+                <div class="panel panel-white post panel-shadow">
+                    <div class="post-heading" style="position:relative;">
+<!--                        <form id="delFormPost" th:action="${'/deletePostUserProfile'}" method="post" th:if="${user.id==post.getUser().id}">-->
+<!--                            <input type="hidden" name="postId" th:value="${post.id}" >-->
+<!--                            <input class="mypage-button-del" type="image" th:src="${'/img/2.png'}">-->
+<!--                        </form>-->
+
+                        <div class="pull-left image">
+                            <img th:src="'/img/'+${post.getUser().imagePath}" class="img-circle avatar" alt="user profile image">
+                        </div>
+                        <div class="pull-left meta">
+                            <div class="title h5">
+                                <a th:href="@{'/userprofile/' + ${post.getUser().id}}" th:text="${post.getUser().name} + ' '+ ${post.getUser().surname}"><b></b></a>
+                                Создал(а) пост
+                            </div>
+                            <h6 class="text-muted time" th:text="${post.date}"></h6>
+                        </div>
+                    </div>
+                    <div class="post-description">
+                        <p th:text="${post.postText}"></p>
+                        <div class="stats">
+                            <form th:action="@{'/likePostUserProfile'}" method="post" class="d-inline-block me-3">
+                                <input type="hidden" name="postId" th:value="${post.id}">
+                                <input type="hidden" name="userId" th:value="${user.id}">
+                                <input class="fa fa-thumbs-up icon" type="image" th:src="@{'/img/like.png'}">
+                                <span th:text="${post.countLike}"></span>
+                            </form>
+                            <a th:href="@{'/postDetails/' + ${post.id}}" class="text-dark text-decoration-none"><img   th:src="@{'/img/comment.png'}"><span class="ms-2" th:text="${post.countComment}"></span></a>
+
+
+                            <!--                                                    <a href="#" class="btn btn-default stat-item">-->
+                            <!--                                                        <i class="fa fa-share icon"></i>-->
+                            <!--                                                    </a>-->
+                        </div>
+                    </div>
+                    <!--Comments-->
+                    <div class="post-footer">
+                        <div class="input-group">
+                            <form th:action="@{'/addcommentuserprofile'}" method="post" class="form-control d-flex" style="border: 0">
+                                <input type="hidden" name="postId" th:value="${post.id}">
+                                <input class="form-control" placeholder="Напишите ваш комментарий"  name="textComment" type="text">
+                                <span class="input-group-addon">
+                                       <button class="btn " style="cursor: pointer"><i class="fa fa-edit"></i></button>
+                                    </span>
+                            </form>
+                        </div>
+                        <ul class="comments-list" th:if="${comments!=null}" th:each="comment: ${comments}">
+                            <li class="comment" style="position: relative">
+                                <form id="delFormComment" th:action="${'/deleteCommentUserProfile'}" method="post" th:if="${user.id==comment.getUser().id}">
+                                    <input type="hidden" name="commentId" th:value="${comment.id}" >
+                                    <input type="hidden" name="postId" th:value="${post.id}" >
+                                    <input class="mypage-button-del" type="image" th:src="${'/img/2.png'}">
+                                </form>
+                                <a class="pull-left" href="/userprofile?id=` + postsList[i].comments[x].user.id + `">
+                                    <img class="avatar" th:src="'/img/'+${comment.user.imagePath}" alt="avatar">
+                                </a>
+                                <div class="comment-body">
+                                    <div class="comment-heading">
+                                        <a class="user comment-user" th:href="@{'/userprofile/' + ${comment.getUser().id}}" th:text="${comment.user.name} +' ' +${comment.user.surname}"></a>
+                                        <h5 class="time" th:text="${comment.date}"></h5>
+                                    </div>
+                                    <p th:text="${comment.comment}"> </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                </div>
+            </div>
+
+</div>
+    </div>
+</div>
+</html>

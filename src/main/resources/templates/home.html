@@ -1,0 +1,155 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" layout:decorator="'layout/main.html'">
+<body onload="loadPosts()">
+<div layout:fragment="content"  >
+
+
+
+
+    <div class="container mt-2 d-flex" >
+        <div class="col-3 me-3">
+            <div class="list-group">
+                <a href="/mypage" class="list-group-item list-group-item-action ">Моя Страница</a>
+                <a href="/editmyprofile" class="list-group-item list-group-item-action ">Редактировать мою страницу</a>
+                <a href="/home" class="list-group-item list-group-item-action active">Новости</a>
+                <a href="/dialogsList" class="list-group-item list-group-item-action ">Сообщения</a>
+                <a href="/followers" class="list-group-item list-group-item-action">Подписчики</a>
+                <a href="/userslist" class="list-group-item list-group-item-action">Все пользователи</a>
+
+            </div>
+        </div>
+
+
+
+        <div class="col-8 home-content-news">
+            <input type="hidden" id="userId" th:value="${user.id}" name="id">
+            <div id="postsList">
+
+                <a onclick="loadPosts()" >Показать новости</a>
+                <script type="text/javascript">
+                    function loadPosts(){
+                        let userId = document.getElementById("userId").value;
+
+                        //console.log(userId);
+
+                        $.ajax({
+                            url: '/ajaxhome/'+userId,
+                            method: 'GET',
+                            success: function (result){
+
+                                let postsList = result;
+
+                               // console.log(postsList);
+
+                                let htmlCode = "";
+
+
+                                for(let i=0; i<postsList.length;i++) {
+                                    htmlCode += `<div class="container bootstrap snippets bootdey">
+                                                    <div class="my-3">
+                                                        <div class="panel panel-white post panel-shadow">
+                                                            <div class="post-heading" style="position:relative;">
+                                                                <div class="pull-left image" >
+                                                                    <img src="/img/`+postsList[i].user.imagePath+`" class="img-circle avatar" alt="user profile image">
+                                                                </div>
+                                                                <div class="pull-left meta">
+                                                                    <div class="title h5">
+                                                                        <a href="/userprofile/`+postsList[i].user.id+`"><b>`+postsList[i].user.name+" "+postsList[i].user.surname +`</b></a>
+                                                                         <a href="/postDetails/ `+ postsList[i].id+`">Создал(а) пост</a>
+
+                                                                    </div>
+                                                                    <h6 class="text-muted time" >`+postsList[i].date +`</h6>
+                                                                </div>
+                                                            </div>
+                                                            <div class="post-description">
+                                                                <p>`+ postsList[i].postText +`</p>
+                                                                <div class="stats">
+                                                                    <a style="cursor: pointer" onclick="likePost(`+postsList[i].id+`)" class="text-dark text-decoration-none"><img   src="../img/like.png"><span class="ms-2" >`+ postsList[i].countLike +`</span></a>
+                                                                    <a href="/postDetails/ + `+postsList[i].id +`" class="text-dark text-decoration-none ms-3"><img   src="../img/comment.png"><span class="ms-2" >`+ postsList[i].countComment +`</span></a>
+                                                                </div>
+                                                            </div>
+                                                                <!--Comments-->
+                                                            <div class="post-footer">
+                                                                <div class="input-group">
+                                                                    <input class="form-control" placeholder="Напишите ваш комментарий" id="textComment`+ postsList[i].id +`" name="textComment" type="text">
+                                                                    <span class="input-group-addon home-button-comment">
+                                                                        <a style="cursor: pointer" onclick="addComment(`+ postsList[i].id +`)"><i class="fa fa-edit"></i></a>
+                                                                    </span>
+                                                                </div>
+                                                            <ul class="comments-list">
+                                                                <a href="/postDetails/`+ postsList[i].id+`">Все комментарии</a>`
+
+                                                                // if(postsList[i].comment!=null) {
+                                                                // htmlCode += `<li class="comment" style="position: relative">
+                                                                //                                     <a class="pull-left" href="/userprofile?id=` + postsList[i].comment.user.id + `">
+                                                                //                                         <img class="avatar" src="` + postsList[i].comment.user.imagePath + `" alt="avatar">
+                                                                //                                     </a>
+                                                                //                                     <div class="comment-body">
+                                                                //                                         <div class="comment-heading">
+                                                                //                                             <h4 class="user">` + postsList[i].comment.user.name + " " + postsList[i].comment.user.surname + `</h4>
+                                                                //                                             <h5 class="time">` + postsList[i].comment.date + `</h5>
+                                                                //                                         </div>
+                                                                //                                         <p>` + postsList[i].comment.comment + `</p>
+                                                                //                                     </div>
+                                                                //                                     </li>
+                                                                //                                     <a href="/postDetails/ `+ postsList[i].id+`">Все комментарии</a>`
+                                                                //
+                                                                // }
+                                                                //
+                                                                 htmlCode += `
+                                                            </ul>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div>`
+                                    }
+
+                                document.getElementById("postsList").innerHTML = htmlCode;
+                            },
+                            dataType: "json"
+                        });
+                    }
+
+
+                    function likePost(postId){
+                        $.ajax({
+                            type: "GET",
+                            url:"/ajaxLikePost/"+postId,
+                            success:function (){
+                                loadPosts();
+
+                            }
+                        })
+                    }
+
+                    function addComment(postId){
+                        let commentText = document.getElementById("textComment"+postId).value;
+
+                        $.post("/ajaxAddComment", {
+                            textComment:  commentText,
+                            postId: postId
+                        }, function (){
+                            commentText.value = "";
+                            loadPosts();
+                        });
+
+                    }
+
+
+                </script>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+</html>

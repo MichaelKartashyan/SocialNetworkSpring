@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" layout:decorator="'layout/main.html'">
+
+<div layout:fragment="content">
+
+
+    <div class="container mt-2 d-flex" >
+
+        <div class="col-3 me-3">
+            <div class="list-group">
+                <a href="/mypage" class="list-group-item list-group-item-action ">Моя Страница</a>
+                <a href="/editmyprofile" class="list-group-item list-group-item-action ">Редактировать мою страницу</a>
+                <a href="/home" class="list-group-item list-group-item-action ">Новости</a>
+                <a href="/dialogsList" class="list-group-item list-group-item-action active">Сообщения</a>
+                <a href="/followers" class="list-group-item list-group-item-action">Подписчики</a>
+                <a href="/userslist" class="list-group-item list-group-item-action  ">Все пользователи</a>
+
+            </div>
+        </div>
+
+
+
+
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-lg-6">
+                    <div class="card chat-app">
+                        <div id="plist" class="people-list">
+
+                            <ul class="list-unstyled chat-list my-2 ">
+                                <li class="clearfix" th:each="dialog:${dialogs}">
+                                    <div th:if="${dialog.getUser1().id==user.id}">
+                                    <a th:href="@{'dialog/'+${dialog.getUser2().id}}" class="text-black"><img th:src="@{'/img/'+${dialog.getUser2().imagePath}}" alt="avatar">
+                                    <div class="about">
+                                        <div class="name" th:text="${dialog.getUser2().name}+' '+${dialog.getUser2().surname}"></div>
+<!--                                        <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>-->
+                                        <div th:text="${dialog.message}"></div>
+                                    </div></a>
+                                    </div>
+
+                                    <div th:if="${dialog.getUser1().id!=user.id}">
+                                        <a th:href="@{'dialog/'+${dialog.getUser1().id}}" class="text-black"><img th:src="@{'/img/'+${dialog.getUser1().imagePath}}" alt="avatar">
+                                            <div class="about">
+                                                <div class="name" th:text="${dialog.getUser1().name}+' '+${dialog.getUser1().surname}"></div>
+                                                <!--                                        <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>-->
+                                                <div th:text="${dialog.message}"></div>
+                                            </div></a>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+</div>
+
+</html>

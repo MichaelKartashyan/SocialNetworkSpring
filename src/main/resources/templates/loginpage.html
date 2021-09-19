@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome!</title>
+    <link rel="stylesheet" type="text/css" th:href="@{'/css/bootstrap.min.css'}">
+    <link rel="stylesheet" type="text/css" th:href="@{'/css/style.css'}">
+</head>
+<body style="background-color: white">
+<div class="container">
+
+
+    <div class="b-popup" id="popUp">
+
+        <div class="b-popup-content">
+
+            <div class="popup-header-3">
+                <h1>Регистрация</h1>
+
+                <img onclick="hide()"  th:src="${'/img/2.png'}">
+            </div>
+
+            <form class="index-form-popup-4" method="post" th:action="@{'/register'}">
+                <div class="d-flex mt-4">
+                    <div class="mb-3 index-form-div ms-2 me-3">
+                        <input type="text" class="form-control" id="name" placeholder="Имя" name="name" required>
+                    </div>
+
+                    <div class="mb-3 index-form-div">
+                        <input type="text" class="form-control" id="surname" placeholder="Фамилия" name="surname" required>
+                    </div>
+
+                </div>
+
+
+                <div class="mb-3 ms-2 me-3">
+
+                    <input type="text" class="form-control" id="email" name="email" placeholder="эл.адрес" required>
+                </div>
+
+                <div class="mb-3 ms-2 me-3">
+
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Новый пароль" required>
+                </div>
+
+                <div class="mb-3 ms-2 me-3 index-bday-5">
+                    <label > Дата рождения</label>
+                    <select name="day">
+                        <option selected>День</option>
+
+                        <option th:each="i : ${#numbers.sequence( 1, 31)}"  th:text="${i}"></option>
+
+
+                    </select>
+
+                    <select name="month">
+                        <option>Месяц</option>
+                        <option selected>Янв</option>
+                        <option>Фев</option>
+                        <option>Мар</option>
+                        <option>Апр</option>
+                        <option>Мая</option>
+                        <option>Июн</option>
+                        <option>Июл</option>
+                        <option>Авг</option>
+                        <option>Сен</option>
+                        <option>Окт</option>
+                        <option>Ноя</option>
+                        <option>Дек</option>
+                    </select>
+
+                    <select name="year">
+                        <option selected>Год</option>
+
+                        <option th:each="i: ${#numbers.sequence(1900,2021)}" th:text="${i}"></option>
+
+
+                    </select>
+                </div>
+
+                <div class="mb-3 ms-2 me-3 index-bday-5">
+                    <label > Пол</label>
+                    <div class="d-flex">
+                        <span class="index-radio">
+                            <label>Женщина</label>
+                            <input type="radio" name="sex" value="Женский" checked>
+                        </span>
+
+                        <span class="index-radio">
+                            <label>Мужчина</label>
+                            <input type="radio" name="sex" value="Мужской">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div style="text-align: center"><button type="submit" class="index-register-button" >Регистрация</button></div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="col-12 d-flex mt-5">
+        <div class="col-7">
+            <div class="index-text">
+                <img th:src="${'/img/sn3.jpg'}"  width="550px" height="450px">
+
+            </div>
+        </div>
+
+        <div class="col-5 float-end">
+            <div class="index-form-container">
+                <form th:action="@{'/auth'}" method="post">
+                    <div class="mb-3 pt-3">
+
+                        <input type="email" class="form-control" name="user_email">
+                    </div>
+                    <div class="mb-3">
+
+                        <input type="password" class="form-control" name="user_password">
+                    </div>
+
+
+                    <div class="alert alert-danger" role="alert" th:if = "${param.error!=null}">
+                        Incorrect email or password
+                    </div>
+
+
+
+                    <button type="submit" class="face-button">Вход</button>
+                </form>
+                <div class="index-create-2">
+                    <a role="button" onclick="show();">Создать аккаунт</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function show(){
+        document.getElementById("popUp").style.display = "block";
+    }
+    function hide(){
+        document.getElementById("popUp").style.display = "none";
+    }
+</script>
+
+<script type="text/javascript" th:src="@{'/js/bootstrap.min.js'}"></script>
+
+</body>
+</html>

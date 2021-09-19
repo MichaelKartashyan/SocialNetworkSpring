@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" layout:decorator="'layout/main.html'">
+
+  <div layout:fragment="content">
+
+
+    <div class="container mt-2 d-flex" >
+
+      <div class="col-3 me-3">
+        <div class="list-group">
+          <a href="/mypage" class="list-group-item list-group-item-action ">Моя Страница</a>
+          <a href="/editmyprofile" class="list-group-item list-group-item-action active">Редактировать мою страницу</a>
+          <a href="/home" class="list-group-item list-group-item-action ">Новости</a>
+          <a href="/dialogsList" class="list-group-item list-group-item-action ">Сообщения</a>
+          <a href="/followers" class="list-group-item list-group-item-action">Подписчики</a>
+          <a href="/userslist" class="list-group-item list-group-item-action">Все пользователи</a>
+
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+      <div class="col-8 mypage-content-news">
+
+        <div class="alert alert-danger" role="alert" th:if="${param.error!=null}">
+          Please insert all info
+        </div>
+
+        <div class="alert alert-success" role="alert" th:if="${param.success!=null}">
+         Profile was saved
+        </div>
+
+        <form method="post" th:action="@{'/editprofile'}">
+          <div class="container mt-3 mb-3">
+            <div class="main-body">
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex flex-column align-items-center text-center">
+                        <img th:src="'/img/'+${user.imagePath}" alt="Admin" class="rounded-circle p-1 bg-primary" width="110">
+                        <div class="mt-3">
+                          <h4 th:text="${user.name}+' '+${user.surname}"></h4>
+                          <p class="text-muted font-size-sm"><b>Город: </b></p>
+                          <p th:text="${user.city}"></p>
+<!--                          <button class="btn btn-primary">Follow</button>-->
+<!--                         <button class="btn btn-outline-primary">Message</button>-->
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-8">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row mb-3">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Имя</h6>
+                        </div>
+
+                        <div class="col-sm-9 text-secondary">
+                          <input type="text" class="form-control" name="uName" th:value="${user.name}">
+                          <input type="hidden" name="id" th:value="${user.id}">
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Фамилия</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          <input type="text" class="form-control" name="surname" th:value="${user.surname}">
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">О себе</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          <input type="text" class="form-control" name="about" th:value="${user.about}">
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Email</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          <input type="text" class="form-control" name="email" th:value="${user.email}">
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Телефон</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          <input type="number" class="form-control" name="phone" th:value="${user.phone}">
+                        </div>
+                      </div>
+
+                      <div class="row mb-3">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Адрес</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          <input type="text" class="form-control" name="city" th:value="${user.city}">
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Место учебы</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                          <input type="text" class="form-control" name="university" th:value="${user.university}">
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-9 text-secondary">
+                          <button type="submit" class="btn btn-primary px-4" >Сохранить изменения</button>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </form>
+
+
+
+
+
+<!--        <form method="post" th:action="@{'/editavatare'}">-->
+<!--          <div class="col-lg-8 offset-4 mb-4">-->
+<!--            <div class="card">-->
+<!--              <div class="card-body">-->
+<!--                <div class="row mb-3">-->
+<!--                  <div class="col-sm-3">-->
+<!--                    <h6 class="mb-0">Изменить Аватар</h6>-->
+<!--                  </div>-->
+
+<!--                  <div class="col-sm-9 text-secondary">-->
+<!--                    <input type="text" class="form-control" name="avatar" >-->
+<!--                  </div>-->
+<!--                </div>-->
+
+<!--                <div class="row">-->
+<!--                  <div class="col-sm-3"></div>-->
+<!--                  <div class="col-sm-9 text-secondary">-->
+<!--                    <button type="submit" class="btn btn-primary px-4" >Сохранить Новый аватар </button>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+
+<!--            </div>-->
+
+<!--          </div>-->
+
+<!--        </form>-->
+
+
+
+<!--        <form method="post" th:action="@{'/editavatare'}">-->
+          <div class="col-lg-8 offset-4 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <div class="row mb-3">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Изменить Аватар</h6>
+                  </div>
+
+                  <div class="col-sm-9 text-secondary">
+                    <input type="file" class="form-control" name="fileupload" id="fileupload">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-3"></div>
+                  <div class="col-sm-9 text-secondary">
+                    <button  class="btn btn-primary px-4" id="upload-button" onclick="uploadFile()">Сохранить Новый аватар </button>
+                  </div>
+                </div>
+              </div>
+            <script >
+              async function uploadFile(){
+                let formData = new FormData();
+                formData.append("file",fileupload.files[0]);
+                let response = await fetch('/editAvatare',{
+                  method:"POST",
+                  body:formData
+                });
+                if(response.status==200){
+                  alert("File successfully uploaded.");
+                }
+              }
+            </script>
+            </div>
+
+          </div>
+
+<!--        </form>-->
+
+
+
+
+
+
+        <form method="post" th:action="@{'/editpassword'}">
+          <div class="col-lg-8 offset-4">
+            <div class="card">
+              <div class="card-body">
+                <div class="row mb-3">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Изменить пароль: новый пароль</h6>
+                  </div>
+
+                  <div class="col-sm-9 text-secondary">
+                    <input type="password" class="form-control" name="password" >
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-sm-3">
+                    <h6 class="mb-0">Повторите новый пароль</h6>
+                  </div>
+
+                  <div class="col-sm-9 text-secondary">
+                    <input type="password" class="form-control" name="repassword" >
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-3"></div>
+                  <div class="col-sm-9 text-secondary">
+                    <button type="submit" class="btn btn-primary px-4" >Сохранить Новый пароль </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+
+</html>

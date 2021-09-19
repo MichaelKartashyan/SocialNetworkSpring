@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" layout:decorator="'layout/main.html'">
+
+<body onload="getMessages()" >
+<div layout:fragment="content">
+
+
+  <div class="container mt-2 d-flex" >
+
+    <div class="col-3 me-3">
+      <div class="list-group">
+        <a href="/mypage" class="list-group-item list-group-item-action ">Моя Страница</a>
+        <a href="/editmyprofile" class="list-group-item list-group-item-action ">Редактировать мою страницу</a>
+        <a href="/home" class="list-group-item list-group-item-action ">Новости</a>
+        <a href="/dialogsList" class="list-group-item list-group-item-action active">Сообщения</a>
+        <a href="/followers" class="list-group-item list-group-item-action">Подписчики</a>
+        <a href="/userslist" class="list-group-item list-group-item-action  ">Все пользователи</a>
+
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="container">
+      <div class="row clearfix">
+        <div class="col-lg-12"  >
+          <div class="card chat-app">
+
+            <div class="chat">
+              <div class="chat-header clearfix">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                      <img th:src="'/img/'+${user2.imagePath}" alt="avatar">
+                    </a>
+                    <div class="chat-about">
+                      <h6 class="m-b-0 d-inline-block" th:text="${user2.name}">  </h6> <h6 class="m-b-0 d-inline-block" th:text="${user2.surname}">  </h6>
+<!--                      <small>Last seen: 2 hours ago</small>-->
+                      <input type="hidden" th:value="${user2.id}" id="user2">
+                      <input type="hidden" th:value="${user.id}" id="user1">
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="chat-history" style="max-height: 700px; min-height: 360px; height: 455px; overflow: auto">
+                <ul class="m-b-0" id="chat">
+
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-message clearfix mt-3">
+          <div class="input-group mb-0">
+            <div class="input-group-prepend">
+              <a style="cursor:pointer;" onclick="writeMassage()"><span class="input-group-text"><i class="fa fa-send"></i></span></a>
+            </div>
+            <input type="text" class="form-control" id="messageText" placeholder="Enter text here...">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+<script>
+  function getMessages() {
+    let user2 = document.getElementById("user2").value;
+    let user1 = document.getElementById("user1").value;
+
+
+    $.ajax({
+      url: '/ajaxGetDialog/' + user2,
+      method: 'GET',
+      success: function (result) {
+        let messageList = result;
+      console.log(messageList);
+        let htmlCode = "";
+
+        for (let i = 0; i < messageList.length; i++) {
+                       if(messageList[i].user1.id==user1){
+                         htmlCode += `
+
+                    <li class="clearfix">
+                    <div class="message-data text-right" style="text-align: right">
+                      <span class="message-data-time">`+messageList[i].date +`</span>
+                      <img src="/img/`+messageList[i].user1.imagePath +`" alt="avatar">
+                    </div>
+                    <div class="message other-message float-right"> `+messageList[i].message +` </div>
+                  </li>`
+                       }else {
+         htmlCode += `    <li class="clearfix">
+                           <div class="message-data">
+                             <span class="message-data-time">`+messageList[i].date +`</span>
+                             <img src="/img/`+messageList[i].user1.imagePath +`" alt="avatar">
+                           </div>
+                           <div class="message my-message">`+messageList[i].message +`</div>
+                         </li>
+                                 `
+                       }
+        }
+
+        document.getElementById("chat").innerHTML = htmlCode;
+      },
+      dataType: "json"
+    });
+  }
+
+
+
+  function writeMassage(){
+    let messageText = document.getElementById("messageText");
+    let user2 = document.getElementById("user2").value;
+
+    $.ajax({
+      type:"POST",
+      url: "/ajaxWriteMassage",
+      data: {
+        messageText:  messageText.value,
+        user2: user2
+      },
+      success: function (){
+        messageText.value = "";
+        getMessages();
+      },
+
+    });
+
+  }
+
+
+
+</script>
+
+  </div>
+
+</div>
+
+</html>

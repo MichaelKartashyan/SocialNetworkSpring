@@ -1,0 +1,41 @@
+<div class="container-fluid p-0" style="height: 59px;">
+    <nav class="navbar  navbar-white bg-white pb-0 position-fixed col-12" style="z-index: 999;">
+        <div class="container-fluid navbar-contain mx-0">
+            <a class="navbar-brand" href="/home"><img th:src="${'../img/logo.png'}" class="navbar-logo" ></a>
+            <form method="post" th:action="${'/search'}">
+                <input type="search" class="navbar-search" name="searchResult">
+            </form>
+
+
+        </div>
+
+        <div class="navbar-user">
+            <a  onclick="show()"><img width="50px" th:src="'/img/'+${user.imagePath}"th:text = "${user.name}"></a>
+
+        </div>
+        <div class="navbar-user-popup" id="userPopup">
+            <p ><a href="/editmyprofile">Редактировать пользователя</a></p>
+            <div style="border-bottom: 1px solid #dadde1" ></div>
+            <p><a href="JavaScript:void(0)" onclick="logout()">Выйти</a></p>
+
+            <script type="text/javascript">
+                function logout(){
+                    document.getElementById("logoutFormId").submit();
+                }
+            </script>
+            <form th:action="@{'/tologout'}" method="post" id = "logoutFormId"></form>
+
+        </div>
+    </nav>
+
+</div>
+<script>
+    function show(){
+        let x = document.getElementById('userPopup');
+        if (x.style.display === 'none') {
+            x.style.display = 'block';
+        } else {
+            x.style.display = 'none';
+        }
+    }
+</script>
